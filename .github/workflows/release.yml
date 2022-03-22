@@ -13,9 +13,6 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v2
 
-      - name: Install libxcb
-        run: sudo apt-get install libxcb-composite0-dev
-
       - name: Set up cargo
         uses: actions-rs/toolchain@v1
         with:
@@ -33,7 +30,7 @@ jobs:
 
       - name: Copy files to output
         run: |
-          cp target/release/nu ankisyncd output/
+          cp target/release/tt output/
       
       - name: Upload artifact
         uses: actions/upload-artifact@v2
@@ -64,10 +61,10 @@ release:
           MINOR=${MINOR#*.}
           PATCH=${VERSION##*.}
           echo "::set-output name=version::${VERSION}"
-          echo "::set-output name=linuxdir::nu_${MAJOR}_${MINOR}_${PATCH}_linux"
-          echo "::set-output name=macosdir::nu_${MAJOR}_${MINOR}_${PATCH}_macOS"
-          echo "::set-output name=windowsdir::nu_${MAJOR}_${MINOR}_${PATCH}_windows"
-          echo "::set-output name=innerdir::nushell-${VERSION}"
+          echo "::set-output name=linuxdir::tt_${MAJOR}_${MINOR}_${PATCH}_linux"
+          echo "::set-output name=macosdir::tt_${MAJOR}_${MINOR}_${PATCH}_macOS"
+          echo "::set-output name=windowsdir::tt_${MAJOR}_${MINOR}_${PATCH}_windows"
+          echo "::set-output name=innerdir::tt-${VERSION}"
       - name: Create Release Draft
         id: create_release
         uses: actions/create-release@v1
@@ -154,18 +151,4 @@ release:
           asset_name: ${{ steps.info.outputs.windowsdir }}.zip
           asset_content_type: application/zip
 
-      - name: Download Windows installer
-        uses: actions/download-artifact@v2
-        with:
-          name: windows-installer
-          path: ./
-
-      - name: Upload Windows installer
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./nushell-windows.msi
-          asset_name: ${{ steps.info.outputs.windowsdir }}.msi
-          asset_content_type: application/x-msi
+      
