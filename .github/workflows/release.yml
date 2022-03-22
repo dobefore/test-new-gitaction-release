@@ -39,7 +39,7 @@ jobs:
           path: output/*
 
 
-release:
+  release:
     name: Publish Release
     runs-on: ubuntu-latest
     needs:
@@ -151,4 +151,3 @@ release:
           asset_name: ${{ steps.info.outputs.windowsdir }}.zip
           asset_content_type: application/zip
 
-      
