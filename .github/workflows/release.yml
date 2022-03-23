@@ -24,51 +24,61 @@ jobs:
       - name: Add cargo taget armv7
         run: rustup target add armv7-unknown-linux-musleabihf
       
-      - name: Download musl-gcc
-        run: wget  -P $HOME https://musl.cc/arm-linux-musleabihf-cross.tgz
+      # - name: Download and unpack lib openssl
+      #   run: | 
+      #     wget   --no-check-certificate https://www.openssl.org/source/old/1.1.1/openssl-1.1.1m.tar.gz
+      #     tar -zxvf openssl-1.1.1m.tar.gz
+      
+      # - name: Export OPENSSL compile env vars to PATH
+      #   run: |
+      #     export MACHINE=armv7
+      #     export ARCH=arm
+      #     export CC=arm-linux-musleabihf-gcc
+      
+      # - name: Compile openssl
+      #   run: | 
+      #     mkdir -p $HOME/openssl
+      #     cd openssl-1.1.1m
+      #     ./config shared --prefix=$HOME/openssl && make 
+      #     make install
+      #     cd ..
+      #     ls $HOME/openssl/include
+      
+      # - name: Export openssl ENV VARS
+      #   run: | 
+      #     ls $HOME/openssl/include
+      #     export OPENSSL_LIB_DIR=$HOME/openssl/lib
+      #     export OPENSSL_INCLUDE_DIR=$HOME/openssl/include
+      #     export OPENSSL_STATIC=true
+        #  git clone --depth 1 https://github.com/raspberrypi/tools.git $HOME/rpitools
+        #   export PATH="$HOME/rpitools/arm-bcm2708/arm-rpi-4.9.3-linux-gnueabihf/bin:$PATH"
+        #   arm-linux-gnueabihf-gcc -v
 
-      - name: unpack musl-gcc
-        run: tar -zxvf $HOME/arm-linux-musleabihf-cross.tgz
-      
-      - name: export musl-gcc to PATH
-        run: export PATH="$HOME/arm-linux-musleabihf-cross/bin:$PATH"
-      
-      - name: Download and unpack lib openssl
+        #   export CC=arm-linux-gnueabihf-gcc
+        #   arm-linux-gnueabihf-gcc -v
+      - name: Build 
         run: | 
+          wget  -P $HOME https://musl.cc/arm-linux-musleabihf-cross.tgz
+          tar -zxvf $HOME/arm-linux-musleabihf-cross.tgz
+          export PATH="$HOME/arm-linux-musleabihf-cross/bin:$PATH"
+
           wget   --no-check-certificate https://www.openssl.org/source/old/1.1.1/openssl-1.1.1m.tar.gz
           tar -zxvf openssl-1.1.1m.tar.gz
-      
-      - name: Export OPENSSL compile env vars to PATH
-        run: |
           export MACHINE=armv7
           export ARCH=arm
           export CC=arm-linux-musleabihf-gcc
-      
-      - name: Compile openssl
-        run: | 
+
           mkdir -p $HOME/openssl
           cd openssl-1.1.1m
           ./config shared --prefix=$HOME/openssl && make 
           make install
           cd ..
           ls $HOME/openssl/include
-      
-      - name: Export openssl ENV VARS
-        run: | 
-          ls $HOME/openssl/include
+
           export OPENSSL_LIB_DIR=$HOME/openssl/lib
           export OPENSSL_INCLUDE_DIR=$HOME/openssl/include
           export OPENSSL_STATIC=true
-         
-      - name: Build 
-        run: | 
-          
-          git clone --depth 1 https://github.com/raspberrypi/tools.git $HOME/rpitools
-          export PATH="$HOME/rpitools/arm-bcm2708/arm-rpi-4.9.3-linux-gnueabihf/bin:$PATH"
-          arm-linux-gnueabihf-gcc -v
 
-          export CC=arm-linux-gnueabihf-gcc
-          arm-linux-gnueabihf-gcc -v
           cargo build --target armv7-unknown-linux-musleabihf --release
       
       - name: Create output directory
