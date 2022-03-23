@@ -61,6 +61,7 @@ jobs:
           wget  -P $HOME https://musl.cc/arm-linux-musleabihf-cross.tgz
           tar -zxvf $HOME/arm-linux-musleabihf-cross.tgz
           export PATH="$HOME/arm-linux-musleabihf-cross/bin:$PATH"
+          arm-linux-musleabihf-gcc -v
 
           wget   --no-check-certificate https://www.openssl.org/source/old/1.1.1/openssl-1.1.1m.tar.gz
           tar -zxvf openssl-1.1.1m.tar.gz
