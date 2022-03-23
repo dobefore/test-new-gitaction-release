@@ -1,5 +1,5 @@
 
-
+// git push origin tagname
 
 use rusqlite::{params, Connection, Result};
 

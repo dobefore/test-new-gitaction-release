@@ -83,42 +83,38 @@ jobs:
           name: macos
           path: output/*
 
-  # windows:
-  #   name: Build Windows
-  #   runs-on: windows-latest
-  #   steps:
-  #     - name: Check out code
-  #       uses: actions/checkout@v2
+  windows:
+    name: Build Windows
+    runs-on: windows-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
 
-  #     - name: Set up cargo
-  #       uses: actions-rs/toolchain@v1
-  #       with:
-  #         profile: minimal
-  #         toolchain: stable
-  #         override: true
+      - name: Set up cargo
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
 
-  #     - name: Build
-  #       uses: actions-rs/cargo@v1
-  #       with:
-  #         command: build
-  #         # args: --release --features rustls
-  #         args: --release 
+      - name: Build
+        uses: actions-rs/cargo@v1
+        with:
+          command: build
+          # args: --release --features rustls
+          args: --release 
 
-  #     # - name: Strip binaries (nu.exe)
-  #     #   run: strip target/release/nu.exe
+      # - name: Strip binaries (nu.exe)
+      #   run: strip target/release/nu.exe
 
 
-  #     - name: Create output directory
-  #       run: mkdir output
+      - name: Create output directory
+        run: mkdir output
 
-  #     - name: Copy files to output
-  #       run: |
-  #         cp target\release\tt.exe output\
+      - name: Copy files to output
+        run: |
+          cp target\release\tt.exe output\
          
-      # Note: If the version of `less.exe` needs to be changed, update this URL
-      # Similarly, if `less.exe` is checked into the repo, copy from the local path here
-      # moved this stuff down to create wix after we download less
-
 
       # - name: Upload zip
       #   uses: actions/upload-artifact@v2
