@@ -27,7 +27,7 @@ jobs:
         run: |
           wget  -P $HOME https://musl.cc/arm-linux-musleabihf-cross.tgz
 
-       - name: unpack musl-gcc
+      - name: unpack musl-gcc
         run: |
           tar -zxvf $HOME/arm-linux-musleabihf-cross.tgz
           ls $HOME 
