@@ -29,7 +29,7 @@ jobs:
 
       - name: unpack musl-gcc
         run: |
-          tar -zxvf $HOME/arm-linux-musleabihf-cross.tgz
+          tar -zxvf $HOME/arm-linux-musleabihf-cross.tgz -C $HOME
           ls $HOME 
       # - name: Download and unpack lib openssl
       #   run: | 
