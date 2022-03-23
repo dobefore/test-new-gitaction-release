@@ -8,7 +8,7 @@ on:
 jobs:
 # linux armv7
   arm:
-    name: Build Linux
+    name: Build Arm
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -59,7 +59,9 @@ jobs:
           export OPENSSL_STATIC=true
       
       - name: Build 
-        run: cargo build --target armv7-unknown-linux-musleabihf --release
+        run: | 
+          export CC=arm-linux-musleabihf-gcc
+          cargo build --target armv7-unknown-linux-musleabihf --release
       
       - name: Create output directory
         run: mkdir output
