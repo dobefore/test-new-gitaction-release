@@ -54,17 +54,18 @@ jobs:
       
       - name: Export openssl ENV VARS
         run: | 
+          ls $HOME/openssl/include
           export OPENSSL_LIB_DIR=$HOME/openssl/lib
           export OPENSSL_INCLUDE_DIR=$HOME/openssl/include
           export OPENSSL_STATIC=true
-      - name: CLone  rpi tools
-        run: |
+         
+      - name: Build 
+        run: | 
+          
           git clone --depth 1 https://github.com/raspberrypi/tools.git $HOME/rpitools
           export PATH="$HOME/rpitools/arm-bcm2708/arm-rpi-4.9.3-linux-gnueabihf/bin:$PATH"
           arm-linux-gnueabihf-gcc -v
-          
-      - name: Build 
-        run: | 
+
           export CC=arm-linux-gnueabihf-gcc
           arm-linux-gnueabihf-gcc -v
           cargo build --target armv7-unknown-linux-musleabihf --release
