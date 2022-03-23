@@ -116,11 +116,11 @@ jobs:
           cp target\release\tt.exe output\
          
 
-      # - name: Upload zip
-      #   uses: actions/upload-artifact@v2
-      #   with:
-      #     name: windows-zip
-      #     path: output\*
+      - name: Upload zip
+        uses: actions/upload-artifact@v2
+        with:
+          name: windows-zip
+          path: output\*
 
   release:
     name: Publish Release
@@ -231,6 +231,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./${{ steps.info.outputs.innerdir }}/tt.exe
-          asset_name: ${{ steps.info.outputs.innerdir }}.exe
+          asset_path: ./${{ steps.info.outputs.innerdir }}.zip
+          asset_name: ${{ steps.info.outputs.innerdir }}.zip
           asset_content_type: application/zip
