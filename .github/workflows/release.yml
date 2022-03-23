@@ -51,6 +51,7 @@ jobs:
           ./config shared --prefix=$HOME/openssl && make 
           make install
           cd ..
+          ls $HOME/openssl/include
       
       - name: Export openssl ENV VARS
         run: | 
