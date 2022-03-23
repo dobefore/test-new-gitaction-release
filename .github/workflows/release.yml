@@ -41,8 +41,8 @@ jobs:
 
       - name: Download and unpack lib openssl
         run: | 
-          wget   --no-check-certificate https://www.openssl.org/source/old/1.1.1/openssl-1.1.1m.tar.gz
-          tar -zxvf openssl-1.1.1m.tar.gz -C .
+          wget --no-check-certificate https://www.openssl.org/source/old/1.1.1/openssl-1.1.1f.tar.gz
+          tar -zxvf openssl-1.1.1f.tar.gz -C .
           ls .
       
       - name: Compile openssl
@@ -56,7 +56,7 @@ jobs:
           cc -v
 
           mkdir -p $HOME/openssl
-          cd openssl-1.1.1m
+          cd openssl-1.1.1f
           ./config shared --prefix=$HOME/openssl && make 
           make install
           cd ..
