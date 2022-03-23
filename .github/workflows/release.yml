@@ -10,6 +10,7 @@ jobs:
   arm:
     name: Build Arm
     runs-on: ubuntu-latest
+    # after every step is finished,export to path will be clear,so in next step ,need re-export
     steps:
       - name: Check out code
         uses: actions/checkout@v2
@@ -65,7 +66,7 @@ jobs:
         #   arm-linux-gnueabihf-gcc -v
       - name: Build 
         run: | 
-          ls $HOME/openssl/include
+          ls $HOME
           export OPENSSL_LIB_DIR=$HOME/openssl/lib
           export OPENSSL_INCLUDE_DIR=$HOME/openssl/include
           export OPENSSL_STATIC=true
@@ -86,7 +87,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          name: linux
+          name: arm
           path: output/*
 
       
@@ -226,7 +227,6 @@ jobs:
         id: info
         env:
           GITHUB_REF: ${{ github.ref }}
-           # echo "::set-output name=windowsdir::tt_${MAJOR}_${MINOR}_${PATCH}_windows"
         run: |
           VERSION=${GITHUB_REF##*/}
           MAJOR=${VERSION%%.*}
