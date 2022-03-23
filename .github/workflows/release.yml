@@ -38,7 +38,7 @@ jobs:
       - name: Copy files to output
         run: |
           cp target/release/tt output/
-          rm output/*.d
+         
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
@@ -75,7 +75,7 @@ jobs:
       - name: Copy files to output
         run: |
           cp target/release/tt output/
-          rm output/*.d
+         
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
