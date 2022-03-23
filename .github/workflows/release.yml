@@ -72,11 +72,8 @@ jobs:
           export OPENSSL_INCLUDE_DIR=$HOME/openssl/include
           export OPENSSL_STATIC=true
 
-          export PATH="$HOME/rpitools/arm-bcm2708/arm-rpi-4.9.3-linux-gnueabihf/bin:$PATH"
-          export CC=arm-linux-gnueabihf-gcc
           export PATH="$HOME/arm-linux-musleabihf-cross/bin:$PATH"
-          cc -v
-
+          
           cargo build --target armv7-unknown-linux-musleabihf --release
       
       - name: Create output directory
