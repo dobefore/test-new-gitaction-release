@@ -128,7 +128,7 @@ jobs:
     needs:
       - linux
       - macos
-      # - windows
+      - windows
     steps:
       - name: Check out code
         uses: actions/checkout@v2
