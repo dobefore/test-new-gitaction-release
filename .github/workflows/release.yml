@@ -31,6 +31,12 @@ jobs:
       - name: unpack musl-gcc
         run: |
           tar -zxvf $HOME/arm-linux-musleabihf-cross.tgz -C $HOME
+      # used to compile openssl
+      - name: Download arm-gnueabihf-gcc 
+        run: |
+          git clone --depth 1 https://github.com/raspberrypi/tools.git $HOME/rpitools
+          export PATH="$HOME/rpitools/arm-bcm2708/arm-rpi-4.9.3-linux-gnueabihf/bin:$PATH"
+          arm-linux-gnueabihf-gcc -v
 
       - name: Download and unpack lib openssl
         run: | 
@@ -40,11 +46,12 @@ jobs:
       
       - name: Compile openssl
         run: | 
-          export PATH="$HOME/arm-linux-musleabihf-cross/bin:$PATH"
-          arm-linux-musleabihf-gcc -v
+          export PATH="$HOME/rpitools/arm-bcm2708/arm-rpi-4.9.3-linux-gnueabihf/bin:$PATH"
+          arm-linux-gnueabihf-gcc -v
+
           export MACHINE=armv7
           export ARCH=arm
-          export CC=arm-linux-musleabihf-gcc
+          export CC=arm-linux-gnueabihf-gcc
           cc -v
 
           mkdir -p $HOME/openssl
@@ -53,16 +60,6 @@ jobs:
           make install
           cd ..
           ls $HOME/openssl/lib
-      
-      - name: Export openssl ENV VARS
-        run: | 
-          ls $HOME/openssl/include
-          export OPENSSL_LIB_DIR=$HOME/openssl/lib
-          export OPENSSL_INCLUDE_DIR=$HOME/openssl/include
-          export OPENSSL_STATIC=true
-        #  git clone --depth 1 https://github.com/raspberrypi/tools.git $HOME/rpitools
-        #   export PATH="$HOME/rpitools/arm-bcm2708/arm-rpi-4.9.3-linux-gnueabihf/bin:$PATH"
-        #   arm-linux-gnueabihf-gcc -v
 
         #   export CC=arm-linux-gnueabihf-gcc
         #   arm-linux-gnueabihf-gcc -v
