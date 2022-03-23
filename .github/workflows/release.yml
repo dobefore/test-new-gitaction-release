@@ -24,20 +24,105 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: build
-          # args: --release --all --features=extra
+          # args: --release --features rustls
+
+      # - name: Strip binaries (nu)
+      #   run: strip target/release/
+
+    
+
       - name: Create output directory
         run: mkdir output
 
       - name: Copy files to output
         run: |
           cp target/release/tt output/
-      
+          rm output/*.d
+
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
           name: linux
           path: output/*
 
+  macos:
+    name: Build macOS
+    runs-on: macos-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set up cargo
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+
+      - name: Build
+        uses: actions-rs/cargo@v1
+        with:
+          command: build
+          # args: --release --all --features=extra
+
+      # - name: Strip binaries (nu)
+      #   run: strip target/release/nu
+
+      - name: Create output directory
+        run: mkdir output
+
+      - name: Copy files to output
+        run: |
+          cp target/release/tt output/
+          rm output/*.d
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: macos
+          path: output/*
+
+  windows:
+    name: Build Windows
+    runs-on: windows-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set up cargo
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+
+      - name: Build
+        uses: actions-rs/cargo@v1
+        with:
+          command: build
+          # args: --release --all --features=extra
+
+      # - name: Strip binaries (nu.exe)
+      #   run: strip target/release/nu.exe
+
+
+      - name: Create output directory
+        run: mkdir output
+
+      - name: Copy files to output
+        run: |
+          cp target\release\tt.exe output\
+         
+      # Note: If the version of `less.exe` needs to be changed, update this URL
+      # Similarly, if `less.exe` is checked into the repo, copy from the local path here
+      # moved this stuff down to create wix after we download less
+
+
+      # - name: Upload zip
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: windows-zip
+      #     path: output\*
 
   release:
     name: Publish Release
@@ -86,8 +171,8 @@ jobs:
 
       - name: Restore Linux File Modes
         run: |
-          chmod 755 ${{ steps.info.outputs.linuxdir }}/${{ steps.info.outputs.innerdir }}/nu*
-          chmod 755 ${{ steps.info.outputs.linuxdir }}/${{ steps.info.outputs.innerdir }}/libssl*
+          chmod 755 ${{ steps.info.outputs.linuxdir }}/${{ steps.info.outputs.innerdir }}/tt*
+
       - name: Create Linux tarball
         run: tar -zcvf ${{ steps.info.outputs.linuxdir }}.tar.gz ${{ steps.info.outputs.linuxdir }}
 
@@ -111,7 +196,7 @@ jobs:
           path: ${{ steps.info.outputs.macosdir }}/${{ steps.info.outputs.innerdir }}
 
       - name: Restore macOS File Modes
-        run: chmod 755 ${{ steps.info.outputs.macosdir }}/${{ steps.info.outputs.innerdir }}/nu*
+        run: chmod 755 ${{ steps.info.outputs.macosdir }}/${{ steps.info.outputs.innerdir }}/tt*
 
       - name: Create macOS Archive
         run: zip -r ${{ steps.info.outputs.macosdir }}.zip ${{ steps.info.outputs.macosdir }}
@@ -150,4 +235,3 @@ jobs:
           asset_path: ./${{ steps.info.outputs.windowsdir }}.zip
           asset_name: ${{ steps.info.outputs.windowsdir }}.zip
           asset_content_type: application/zip
-
