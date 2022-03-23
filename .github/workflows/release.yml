@@ -60,14 +60,16 @@ jobs:
           ./config shared --prefix=$HOME/openssl && make 
           make install
           cd ..
-          ls $HOME/openssl/lib
+          ls $HOME/openssl/include
 
         #   export CC=arm-linux-gnueabihf-gcc
         #   arm-linux-gnueabihf-gcc -v
       - name: Build 
         run: | 
-          ls $HOME/openssl/include
           ls $HOME/openssl/lib
+          export PATH="$HOME/rpitools/arm-bcm2708/arm-rpi-4.9.3-linux-gnueabihf/bin:$PATH"
+          export CC=arm-linux-gnueabihf-gcc
+          
           export OPENSSL_LIB_DIR=$HOME/openssl/lib
           export OPENSSL_INCLUDE_DIR=$HOME/openssl/include
           export OPENSSL_STATIC=true
