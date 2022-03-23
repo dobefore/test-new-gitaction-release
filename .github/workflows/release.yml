@@ -31,11 +31,6 @@ jobs:
       - name: unpack musl-gcc
         run: |
           tar -zxvf $HOME/arm-linux-musleabihf-cross.tgz -C $HOME
-      
-      - name: Export musl-gcc to PATH
-        run: |
-          export PATH="$HOME/arm-linux-musleabihf-cross/bin:$PATH"
-          arm-linux-musleabihf-gcc -v
 
       - name: Download and unpack lib openssl
         run: | 
@@ -43,15 +38,15 @@ jobs:
           tar -zxvf openssl-1.1.1m.tar.gz -C .
           ls .
       
-      - name: Export MAKE env vars 
+      - name: Compile openssl
         run: | 
+          export PATH="$HOME/arm-linux-musleabihf-cross/bin:$PATH"
+          arm-linux-musleabihf-gcc -v
           export MACHINE=armv7
           export ARCH=arm
           export CC=arm-linux-musleabihf-gcc
           cc -v
-      
-      - name: Compile openssl
-        run: | 
+
           mkdir -p $HOME/openssl
           cd openssl-1.1.1m
           ./config shared --prefix=$HOME/openssl && make 
@@ -73,7 +68,13 @@ jobs:
         #   arm-linux-gnueabihf-gcc -v
       - name: Build 
         run: | 
-          ls .
+          ls $HOME/openssl/include
+          export OPENSSL_LIB_DIR=$HOME/openssl/lib
+          export OPENSSL_INCLUDE_DIR=$HOME/openssl/include
+          export OPENSSL_STATIC=true
+
+          export PATH="$HOME/arm-linux-musleabihf-cross/bin:$PATH"
+          arm-linux-musleabihf-gcc -v
 
           cargo build --target armv7-unknown-linux-musleabihf --release
       
