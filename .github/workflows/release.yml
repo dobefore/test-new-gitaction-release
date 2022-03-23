@@ -57,12 +57,15 @@ jobs:
           export OPENSSL_LIB_DIR=$HOME/openssl/lib
           export OPENSSL_INCLUDE_DIR=$HOME/openssl/include
           export OPENSSL_STATIC=true
-      
+      - name: CLone  rpi tools
+        run: |
+          git clone --depth 1 https://github.com/raspberrypi/tools.git $HOME/rpitools
+          export PATH="$HOME/rpitools/arm-bcm2708/arm-rpi-4.9.3-linux-gnueabihf/bin:$PATH"
+
       - name: Build 
         run: | 
-          export PATH="$HOME/arm-linux-musleabihf-cross/bin:$PATH"
-          export CC=
-          arm-linux-musleabihf-gcc -V
+          export CC=arm-linux-gnueabihf-gcc
+          arm-linux-gnueabihf-gcc -V
           cargo build --target armv7-unknown-linux-musleabihf --release
       
       - name: Create output directory
