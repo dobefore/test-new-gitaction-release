@@ -60,7 +60,8 @@ jobs:
       
       - name: Build 
         run: | 
-          export CC=arm-linux-musleabihf-gcc
+          export PATH="$HOME/arm-linux-musleabihf-cross/bin:$PATH"
+          export CC=
           cargo build --target armv7-unknown-linux-musleabihf --release
       
       - name: Create output directory
