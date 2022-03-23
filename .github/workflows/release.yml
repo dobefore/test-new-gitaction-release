@@ -83,37 +83,37 @@ jobs:
           name: macos
           path: output/*
 
-  windows:
-    name: Build Windows
-    runs-on: windows-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v2
+  # windows:
+  #   name: Build Windows
+  #   runs-on: windows-latest
+  #   steps:
+  #     - name: Check out code
+  #       uses: actions/checkout@v2
 
-      - name: Set up cargo
-        uses: actions-rs/toolchain@v1
-        with:
-          profile: minimal
-          toolchain: stable
-          override: true
+  #     - name: Set up cargo
+  #       uses: actions-rs/toolchain@v1
+  #       with:
+  #         profile: minimal
+  #         toolchain: stable
+  #         override: true
 
-      - name: Build
-        uses: actions-rs/cargo@v1
-        with:
-          command: build
-          # args: --release --features rustls
-          args: --release 
+  #     - name: Build
+  #       uses: actions-rs/cargo@v1
+  #       with:
+  #         command: build
+  #         # args: --release --features rustls
+  #         args: --release 
 
-      # - name: Strip binaries (nu.exe)
-      #   run: strip target/release/nu.exe
+  #     # - name: Strip binaries (nu.exe)
+  #     #   run: strip target/release/nu.exe
 
 
-      - name: Create output directory
-        run: mkdir output
+  #     - name: Create output directory
+  #       run: mkdir output
 
-      - name: Copy files to output
-        run: |
-          cp target\release\tt.exe output\
+  #     - name: Copy files to output
+  #       run: |
+  #         cp target\release\tt.exe output\
          
       # Note: If the version of `less.exe` needs to be changed, update this URL
       # Similarly, if `less.exe` is checked into the repo, copy from the local path here
@@ -132,7 +132,7 @@ jobs:
     needs:
       - linux
       - macos
-      - windows
+      # - windows
     steps:
       - name: Check out code
         uses: actions/checkout@v2
@@ -141,6 +141,7 @@ jobs:
         id: info
         env:
           GITHUB_REF: ${{ github.ref }}
+           # echo "::set-output name=windowsdir::tt_${MAJOR}_${MINOR}_${PATCH}_windows"
         run: |
           VERSION=${GITHUB_REF##*/}
           MAJOR=${VERSION%%.*}
@@ -150,7 +151,7 @@ jobs:
           echo "::set-output name=version::${VERSION}"
           echo "::set-output name=linuxdir::tt_${MAJOR}_${MINOR}_${PATCH}_linux"
           echo "::set-output name=macosdir::tt_${MAJOR}_${MINOR}_${PATCH}_macOS"
-          echo "::set-output name=windowsdir::tt_${MAJOR}_${MINOR}_${PATCH}_windows"
+         
           echo "::set-output name=innerdir::tt-${VERSION}"
       - name: Create Release Draft
         id: create_release
@@ -213,27 +214,27 @@ jobs:
           asset_name: ${{ steps.info.outputs.macosdir }}.zip
           asset_content_type: application/zip
 
-      - name: Create Windows Directory
-        run: mkdir -p ${{ steps.info.outputs.windowsdir }}/${{ steps.info.outputs.innerdir }}
+      # - name: Create Windows Directory
+      #   run: mkdir -p ${{ steps.info.outputs.windowsdir }}/${{ steps.info.outputs.innerdir }}
 
-      - name: Download Windows zip
-        uses: actions/download-artifact@v2
-        with:
-          name: windows-zip
-          path: ${{ steps.info.outputs.windowsdir }}/${{ steps.info.outputs.innerdir }}
+      # - name: Download Windows zip
+      #   uses: actions/download-artifact@v2
+      #   with:
+      #     name: windows-zip
+      #     path: ${{ steps.info.outputs.windowsdir }}/${{ steps.info.outputs.innerdir }}
 
-      - name: Show Windows Artifacts
-        run: ls -la ${{ steps.info.outputs.windowsdir }}/${{ steps.info.outputs.innerdir }}
+      # - name: Show Windows Artifacts
+      #   run: ls -la ${{ steps.info.outputs.windowsdir }}/${{ steps.info.outputs.innerdir }}
 
-      - name: Create macOS Archive
-        run: zip -r ${{ steps.info.outputs.windowsdir }}.zip ${{ steps.info.outputs.windowsdir }}
+      # - name: Create macOS Archive
+      #   run: zip -r ${{ steps.info.outputs.windowsdir }}.zip ${{ steps.info.outputs.windowsdir }}
 
-      - name: Upload Windows zip
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./${{ steps.info.outputs.windowsdir }}.zip
-          asset_name: ${{ steps.info.outputs.windowsdir }}.zip
-          asset_content_type: application/zip
+      # - name: Upload Windows zip
+      #   uses: actions/upload-release-asset@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     upload_url: ${{ steps.create_release.outputs.upload_url }}
+      #     asset_path: ./${{ steps.info.outputs.windowsdir }}.zip
+      #     asset_name: ${{ steps.info.outputs.windowsdir }}.zip
+      #     asset_content_type: application/zip
