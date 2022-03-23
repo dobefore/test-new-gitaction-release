@@ -160,17 +160,17 @@ jobs:
           draft: true
 
       - name: Create Linux Directory
-        run: mkdir -p ${{ steps.info.outputs.linuxdir }}/${{ steps.info.outputs.innerdir }}
+        run: mkdir -p ${{ steps.info.outputs.linuxdir }}
 
       - name: Download Linux Artifacts
         uses: actions/download-artifact@v2
         with:
           name: linux
-          path: ${{ steps.info.outputs.linuxdir }}/${{ steps.info.outputs.innerdir }}
+          path: ${{ steps.info.outputs.linuxdir }}
 
       - name: Restore Linux File Modes
         run: |
-          chmod 755 ${{ steps.info.outputs.linuxdir }}/${{ steps.info.outputs.innerdir }}/tt*
+          chmod 755 ${{ steps.info.outputs.linuxdir }}/tt*
 
       - name: Create Linux tarball
         run: tar -zcvf ${{ steps.info.outputs.linuxdir }}.tar.gz ${{ steps.info.outputs.linuxdir }}
@@ -186,16 +186,16 @@ jobs:
           asset_content_type: application/gzip
 
       - name: Create macOS Directory
-        run: mkdir -p ${{ steps.info.outputs.macosdir }}/${{ steps.info.outputs.innerdir }}
+        run: mkdir -p ${{ steps.info.outputs.macosdir }}
 
       - name: Download macOS Artifacts
         uses: actions/download-artifact@v2
         with:
           name: macos
-          path: ${{ steps.info.outputs.macosdir }}/${{ steps.info.outputs.innerdir }}
+          path: ${{ steps.info.outputs.macosdir }}
 
       - name: Restore macOS File Modes
-        run: chmod 755 ${{ steps.info.outputs.macosdir }}/${{ steps.info.outputs.innerdir }}/tt*
+        run: chmod 755 ${{ steps.info.outputs.macosdir }}/tt*
 
       - name: Create macOS Archive
         run: zip -r ${{ steps.info.outputs.macosdir }}.zip ${{ steps.info.outputs.macosdir }}
@@ -211,16 +211,16 @@ jobs:
           asset_content_type: application/zip
 
       - name: Create Windows Directory
-        run: mkdir -p ${{ steps.info.outputs.windowsdir }}/${{ steps.info.outputs.innerdir }}
+        run: mkdir -p ${{ steps.info.outputs.windowsdir }}
 
       - name: Download Windows zip
         uses: actions/download-artifact@v2
         with:
           name: windows-zip
-          path: ${{ steps.info.outputs.windowsdir }}/${{ steps.info.outputs.innerdir }}
+          path: ${{ steps.info.outputs.windowsdir }}
 
       - name: Show Windows Artifacts
-        run: ls -la ${{ steps.info.outputs.windowsdir }}/${{ steps.info.outputs.innerdir }}
+        run: ls -la ${{ steps.info.outputs.windowsdir }}
 
       - name: Create Windows Archive
         run: zip -r ${{ steps.info.outputs.windowsdir }}.zip ${{ steps.info.outputs.windowsdir }}
