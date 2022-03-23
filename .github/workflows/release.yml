@@ -23,6 +23,7 @@ jobs:
 # this may not succeed?
       - name: Add cargo taget armv7
         run: rustup target add armv7-unknown-linux-musleabihf
+
       - name: Download musl-gcc
         run: |
           wget  -P $HOME https://musl.cc/arm-linux-musleabihf-cross.tgz
@@ -30,33 +31,40 @@ jobs:
       - name: unpack musl-gcc
         run: |
           tar -zxvf $HOME/arm-linux-musleabihf-cross.tgz -C $HOME
-          ls $HOME 
-      # - name: Download and unpack lib openssl
-      #   run: | 
-      #     wget   --no-check-certificate https://www.openssl.org/source/old/1.1.1/openssl-1.1.1m.tar.gz
-      #     tar -zxvf openssl-1.1.1m.tar.gz
       
-      # - name: Export OPENSSL compile env vars to PATH
-      #   run: |
-      #     export MACHINE=armv7
-      #     export ARCH=arm
-      #     export CC=arm-linux-musleabihf-gcc
+      - name: Export musl-gcc to PATH
+        run: |
+          export PATH="$HOME/arm-linux-musleabihf-cross/bin:$PATH"
+          arm-linux-musleabihf-gcc -v
+
+      - name: Download and unpack lib openssl
+        run: | 
+          wget   --no-check-certificate https://www.openssl.org/source/old/1.1.1/openssl-1.1.1m.tar.gz
+          tar -zxvf openssl-1.1.1m.tar.gz -C .
+          ls .
       
-      # - name: Compile openssl
-      #   run: | 
-      #     mkdir -p $HOME/openssl
-      #     cd openssl-1.1.1m
-      #     ./config shared --prefix=$HOME/openssl && make 
-      #     make install
-      #     cd ..
-      #     ls $HOME/openssl/include
+      - name: Export MAKE env vars 
+        run: | 
+          export MACHINE=armv7
+          export ARCH=arm
+          export CC=arm-linux-musleabihf-gcc
+          cc -v
       
-      # - name: Export openssl ENV VARS
-      #   run: | 
-      #     ls $HOME/openssl/include
-      #     export OPENSSL_LIB_DIR=$HOME/openssl/lib
-      #     export OPENSSL_INCLUDE_DIR=$HOME/openssl/include
-      #     export OPENSSL_STATIC=true
+      - name: Compile openssl
+        run: | 
+          mkdir -p $HOME/openssl
+          cd openssl-1.1.1m
+          ./config shared --prefix=$HOME/openssl && make 
+          make install
+          cd ..
+          ls $HOME/openssl/lib
+      
+      - name: Export openssl ENV VARS
+        run: | 
+          ls $HOME/openssl/include
+          export OPENSSL_LIB_DIR=$HOME/openssl/lib
+          export OPENSSL_INCLUDE_DIR=$HOME/openssl/include
+          export OPENSSL_STATIC=true
         #  git clone --depth 1 https://github.com/raspberrypi/tools.git $HOME/rpitools
         #   export PATH="$HOME/rpitools/arm-bcm2708/arm-rpi-4.9.3-linux-gnueabihf/bin:$PATH"
         #   arm-linux-gnueabihf-gcc -v
@@ -65,26 +73,7 @@ jobs:
         #   arm-linux-gnueabihf-gcc -v
       - name: Build 
         run: | 
-          ls $HOME
-          export PATH="$HOME/arm-linux-musleabihf-cross/bin:$PATH"
-          arm-linux-musleabihf-gcc -v
-
-          wget   --no-check-certificate https://www.openssl.org/source/old/1.1.1/openssl-1.1.1m.tar.gz
-          tar -zxvf openssl-1.1.1m.tar.gz
-          export MACHINE=armv7
-          export ARCH=arm
-          export CC=arm-linux-musleabihf-gcc
-
-          mkdir -p $HOME/openssl
-          cd openssl-1.1.1m
-          ./config shared --prefix=$HOME/openssl && make 
-          make install
-          cd ..
-          ls $HOME/openssl/include
-
-          export OPENSSL_LIB_DIR=$HOME/openssl/lib
-          export OPENSSL_INCLUDE_DIR=$HOME/openssl/include
-          export OPENSSL_STATIC=true
+          ls .
 
           cargo build --target armv7-unknown-linux-musleabihf --release
       
