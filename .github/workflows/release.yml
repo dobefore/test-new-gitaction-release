@@ -78,7 +78,7 @@ jobs:
           
           cd sqlite-autoconf-3380200
           ./configure --host=armv6 --prefix=$HOME/sql
-          make & make install
+          make && make install
 
       - name: Build 
         run: | 
