@@ -41,13 +41,13 @@ jobs:
           override: true
           components: rustfmt, clippy
       
-      # set up and run pre-commit
-      - name: Run pre-commit
-        run: |
-          pip -V
-          pip install pre-commit
-          pre-commit --version
-          pre-commit run --all-files
+      # # set up and run pre-commit
+      # - name: Run pre-commit
+      #   run: |
+      #     pip -V
+      #     pip install pre-commit
+      #     pre-commit --version
+      #     pre-commit run --all-files
           
       - name: Rustfmt
         uses: actions-rs/cargo@v1

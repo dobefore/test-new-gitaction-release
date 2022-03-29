@@ -9,7 +9,11 @@ struct Person {
     name: String,
     data: Option<Vec<u8>>,
 }
+<<<<<<< HEAD
 fn re() {
+=======
+fn trt() {
+>>>>>>> main
     
 }
 fn main() -> Result<()> {
