@@ -77,7 +77,7 @@ jobs:
           export CC=arm-linux-musleabihf-gcc
           
           cd sqlite-autoconf-3380200
-          ./configure --host=armv6 --prefix=/home/ubuntu/sql
+          ./configure --host=armv6 --prefix=$HOME/sql
           make & make install
 
       - name: Build 
