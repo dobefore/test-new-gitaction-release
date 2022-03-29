@@ -220,7 +220,7 @@ jobs:
       - linux
       - macos
       - windows
-      - arm
+
     steps:
       - name: Check out code
         uses: actions/checkout@v2
