@@ -9,9 +9,7 @@ struct Person {
     name: String,
     data: Option<Vec<u8>>,
 }
-fn trt() {
-    
-}
+
 fn main() -> Result<()> {
     let conn = Connection::open_in_memory()?;
 
