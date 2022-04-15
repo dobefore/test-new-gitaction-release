@@ -3,7 +3,7 @@ name: builddocker
 
 on:
   push:
-    branches: master
+    branches: main
 
 jobs:
   buildx:
