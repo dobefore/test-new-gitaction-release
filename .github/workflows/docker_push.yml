@@ -23,19 +23,6 @@ jobs:
       # - name: run pre-commit
       #   uses: pre-commit/action@v2.0.3
       # linux/arm/v7,
-
-      -
-        name: Prepare
-        id: prepare
-        run: |
-          DOCKER_IMAGE=dobefore/test-new-gitaction-release
-          DOCKER_PLATFORMS=linux/amd64,linux/arm64
-          TAGS="$TAGS --tag ${DOCKER_IMAGE}:latest"
-
-          echo ::set-output name=docker_image::${DOCKER_IMAGE}
-          echo ::set-output name=buildx_args::--platform ${DOCKER_PLATFORMS} \
-            --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') \
-            ${TAGS} --file ./Dockerfile .
             
       # https://github.com/docker/setup-qemu-action
       - name: Set up QEMU
@@ -43,10 +30,7 @@ jobs:
       # https://github.com/docker/setup-buildx-action
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
-      -
-        name: Docker Buildx (build)
-        run: |
-          docker buildx build --output "type=image,push=false" ${{ steps.prepare.outputs.buildx_args }}
+  
       -
         name: Login to DockerHub
         uses: docker/login-action@v1
@@ -54,10 +38,11 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
       -
-        name: Docker Buildx (push)
-        run: |
-          docker buildx build --output "type=image,push=true" ${{ steps.prepare.outputs.buildx_args }}
-      -
-        name: Inspect image
-        run: |
-          docker buildx imagetools inspect ${{ steps.prepare.outputs.docker_image }}:latest
+        name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: dobefore/test-new-gitaction-release:latest
