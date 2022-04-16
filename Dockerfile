@@ -4,7 +4,6 @@ WORKDIR /usr/src/test-new-gitaction-release
 COPY . .
 # prost-build failed for armv7h https://github.com/ankicommunity/anki-sync-server-rs/issues/22 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends --assume-yes protobuf-compiler git
-RUN scripts/clone_patch_anki
 
 RUN cargo build --release  
 
