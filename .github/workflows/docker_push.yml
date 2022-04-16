@@ -15,9 +15,9 @@ jobs:
       - name: Set up python
         uses: actions/setup-python@v2
 
-      # clone and patch anki library  
-      - name: Clone patch Anki
-        run: sh ./scripts/clone_patch_anki
+      # # clone and patch anki library  
+      # - name: Clone patch Anki
+      #   run: sh ./scripts/clone_patch_anki
           
       # set up and run pre-commit pre-commit run --all-files
       - name: run pre-commit
