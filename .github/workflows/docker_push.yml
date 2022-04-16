@@ -22,13 +22,14 @@ jobs:
       # # set up and run pre-commit pre-commit run --all-files
       # - name: run pre-commit
       #   uses: pre-commit/action@v2.0.3
+      # linux/arm/v7,
 
       -
         name: Prepare
         id: prepare
         run: |
           DOCKER_IMAGE=dobefore/test-new-gitaction-release
-          DOCKER_PLATFORMS=linux/amd64,linux/arm/v7,linux/arm64
+          DOCKER_PLATFORMS=linux/amd64,linux/arm64
           TAGS="$TAGS --tag ${DOCKER_IMAGE}:latest"
 
           echo ::set-output name=docker_image::${DOCKER_IMAGE}
