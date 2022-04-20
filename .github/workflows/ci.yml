@@ -45,7 +45,7 @@ jobs:
 
       # run script show realpath
       - name: Clone patch Anki
-        run: sh ./rp
+        run: sh ./clone_patch_anki
           
           
 
