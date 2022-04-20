@@ -29,6 +29,6 @@ echo "Cloning anki from $ANKI_REPO_URL"
 cd "$PROJECT_ROOT"
 git clone "$ANKI_REPO_URL"
 echo "Checking out commit $ANKI_COMMIT and applying patch"
-cd anki
-git checkout $ANKI_COMMIT
-git apply "$ANKI_PATCH_FOLDER/$ANKI_COMMIT$ANKI_FILE_SUFFIX"
+# cd anki
+# git checkout $ANKI_COMMIT
+# git apply "$ANKI_PATCH_FOLDER/$ANKI_COMMIT$ANKI_FILE_SUFFIX"
